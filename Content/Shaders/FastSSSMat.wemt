@@ -1,0 +1,77 @@
+!Evergine.Assets.Exporters.MaterialMetaFile,Evergine.Assets
+Id: d1914f09-baff-46c9-873b-263e66a3bb9a
+DefaultProfile:
+  ExcludeAsset: false
+  Name: null
+  Platform: Undefined
+ExportAsRaw: false
+MaterialInfo:
+  Id: 587684c1-56ff-49f5-9dbe-315fbb37f1b2
+  ActiveDirectives: []
+  AllowInstancing: false
+  EffectID: 0ca54788-565f-4921-ae6b-5a2a67808529
+  Layer: 0db59561-b3f5-444f-b5de-e62e3a5b42bf
+  OrderBias: 0
+  Parameters:
+    - Name: WorldViewProj
+      Type: Evergine.Mathematics.Matrix4x4,Evergine.Mathematics
+      ValueByteArray: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+    - Name: World
+      Type: Evergine.Mathematics.Matrix4x4,Evergine.Mathematics
+      ValueByteArray: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+    - Name: CameraPosition
+      Type: Evergine.Mathematics.Vector3,Evergine.Mathematics
+      ValueByteArray: AAAAAAAAAAAAAAAA
+    - Name: LightPosition
+      Type: Evergine.Mathematics.Vector3,Evergine.Mathematics
+      ValueByteArray: AACAQAAAgEAAAIBA
+    - Name: ambientFactor
+      Type: System.Single
+      ValueByteArray: CtejPA==
+    - Name: Metallic
+      Type: System.Single
+      ValueByteArray: AAAAAA==
+    - Name: Roughness
+      Type: System.Single
+      ValueByteArray: AAAAAA==
+    - Name: Reflectance
+      Type: System.Single
+      ValueByteArray: mpmZPg==
+    - Name: irradiPerp
+      Type: System.Single
+      ValueByteArray: AAAgQQ==
+    - Name: fLTDistortion
+      Type: System.Single
+      ValueByteArray: AACAPw==
+    - Name: iLTPower
+      Type: System.Single
+      ValueByteArray: AACAPw==
+    - Name: fLTScale
+      Type: System.Single
+      ValueByteArray: AACAPw==
+    - Name: fLTAmbient
+      Type: System.Single
+      ValueByteArray: CtejPA==
+    - Name: SSColor
+      Type: Evergine.Mathematics.Vector3,Evergine.Mathematics
+      ValueByteArray: ZmZmP7gehT4fhWs+
+    - Name: SubsurfaceScattering
+      Type: System.Single
+      ValueByteArray: AAAAPw==
+    - Name: baseColor
+      Type: Evergine.Mathematics.Vector3,Evergine.Mathematics
+      ValueByteArray: AAAAP1yPQj64HgU+
+    - Name: SubsurfaceRadius
+      Type: System.Single
+      ValueByteArray: AACAPg==
+  Samplers:
+    - ID: 00000000-0000-0000-0000-000000000000
+      Name: null
+  Textures:
+    - ID: 30216e69-962e-4cb4-abbc-719c559a279e
+      Name: BaseTexture
+    - ID: 76b80ef3-ce59-44e1-b50a-3c2e62ab74f3
+      Name: RoughnessAOThickness
+    - ID: 00000000-0000-0000-0000-000000000000
+      Name: null
+Profiles: {}
