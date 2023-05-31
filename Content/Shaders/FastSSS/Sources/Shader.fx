@@ -46,13 +46,16 @@
 	{
 		float4 position : POSITION;
 		float3 normal	: NORMAL;
+		float4 tangent	: TANGENT;
 		float2 texCoord : TEXCOORD;
 	};
 
 	struct PS_IN
 	{
 		float4 position 	: SV_POSITION;
-		float3 normal		: NORMAL;
+		float3 normal		: NORMAL0;
+		float3 tangent		: TANGENT0;
+		float3 bitangent	: BINORMAL0;
 		float2 texCoord 	: TEXCOORD0;
 		float3 positionWS 	: TEXCOORD1;
 	};
@@ -65,6 +68,9 @@
 		
 		output.positionWS = mul(input.position, World).xyz;
 		output.normal = mul(float4(input.normal, 0), World).xyz;
+		output.tangent = mul(input.tangent, World).xyz;
+		output.bitangent = cross(output.normal, output.tangent) * input.tangent.w;
+		
 		output.texCoord = input.texCoord;
 
 		return output;
@@ -162,9 +168,12 @@
 		float3 base = BaseTexture.Sample(TextureSampler, input.texCoord).rgb;
 		float3 RAT = RoughnessAOThickness.Sample(TextureSampler, input.texCoord).xyz;
 		
+		float3 normalTex = NormalTexture.Sample(TextureSampler, input.texCoord).rgb * 2 - 1;
+		float3x3 tangentToWorld = float3x3(normalize(input.tangent), normalize(input.bitangent), normalize(input.normal));
+		float normal = normalize(mul(normalTex, tangentToWorld));
+		
 		float3 viewDir = normalize(CameraPosition - input.positionWS);
 		float3 lightDir = normalize(LightPosition - input.positionWS);
-		float3 normal = normalize(input.normal);
 		float roughness = RAT.x;
 		float metallic = Metallic; //mrTexture.y;
 		float reflectance = Reflectance;
