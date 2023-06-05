@@ -6,7 +6,7 @@ DefaultProfile:
   Platform: Undefined
 ExportAsRaw: false
 MaterialInfo:
-  Id: 51dfafd3-fd14-4229-a719-2f34c54004c7
+  Id: c6051cb3-c8ce-4cd1-9379-bff5c56737e4
   ActiveDirectives: []
   AllowInstancing: false
   EffectID: 0ca54788-565f-4921-ae6b-5a2a67808529
@@ -24,7 +24,7 @@ MaterialInfo:
       ValueByteArray: AAAAAAAAAAAAAAAA
     - Name: LightPosition
       Type: Evergine.Mathematics.Vector3,Evergine.Mathematics
-      ValueByteArray: AACAQAAAgEAAAIBA
+      ValueByteArray: AACAwAAAgEAAAIBA
     - Name: ambientFactor
       Type: System.Single
       ValueByteArray: CtejPA==
@@ -74,4 +74,10 @@ MaterialInfo:
       Name: RoughnessAOThickness
     - ID: 383b589d-fb0c-4fc7-9eb3-5df73518e5ce
       Name: NormalTexture
+    - ID: fb0cc4bc-2a26-441b-a3e0-1db470214678
+      Name: RadianceTexture
+    - ID: e7ea8089-afa2-4025-b976-9ba4b90743f4
+      Name: IrradianceTexture
+    - ID: a0b92e4c-3c22-44cd-a668-ba38d1903344
+      Name: BRDFIntegrationTexture
 Profiles: {}

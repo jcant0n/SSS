@@ -73,61 +73,6 @@ Items:
     Children: []
     Id: 9841b6b3-9c09-4b60-b442-a5c63257ee02
   - !Evergine.Framework.Assets.AssetSources.Entities.EntityItemModel,Evergine.Framework
-    Name: SunLight
-    Tag: null
-    IsEnabled: true
-    IsStatic: false
-    Components:
-      - !Evergine.Framework.Graphics.Transform3D,Evergine.Framework
-        Id: d73a976d-b2ab-4572-9ec9-351ded5f6fd3
-        IsEnabled: true
-        LocalOrientation:
-          W: 0.582563519
-          X: -0.271654308
-          Y: 0.694271922
-          Z: 0.323743761
-        LocalPosition:
-          X: 4.0
-          Y: 4.0
-          Z: 4.0
-        LocalScale:
-          X: 1.00999999
-          Y: 1.0
-          Z: 1.0
-      - !Evergine.Framework.Graphics.PhotometricDirectionalLight,Evergine.Framework
-        Id: 5f6768ca-a7e6-4ab7-82b2-d9b3c42d111f
-        Color:
-          A: 0
-          B: 228
-          G: 240
-          R: 249
-        ColorByTemperature: true
-        DebugMode: false
-        GammaDistribution: 0.800000012
-        Illuminance: 3.0
-        Intensity: 3.0
-        IsEnabled: true
-        IsShadowEnabled: true
-        LinearColor:
-          A: 0.0
-          B: 0.77908951
-          G: 0.874792635
-          R: 0.9453125
-        ShadowBias: 0.00499999989
-        ShadowDistance: 80.0
-        ShadowOpacity: 1.0
-        SplitDistance:
-          - 0.0
-          - 0.0
-          - 0.0
-          - 0.0
-        Temperature: 6499.99512
-      - !Evergine.Framework.Graphics.SunComponent,Evergine.Framework
-        Id: 6f2b70f3-a505-49a6-9454-130b04d48cd3
-        IsEnabled: true
-    Children: []
-    Id: 3f7df33e-e1b9-411e-9601-362975b0c871
-  - !Evergine.Framework.Assets.AssetSources.Entities.EntityItemModel,Evergine.Framework
     Name: SkyAtmosphere
     Tag: Skybox
     IsEnabled: true
@@ -153,7 +98,7 @@ Items:
         Id: bb44cd62-4d92-418a-8a42-bbc2ed2b6f07
         AsignedTo: Default
         IsEnabled: true
-        Material: 11de7a8d-6924-4507-93a4-e2bebe9dcb76
+        Material: e769412c-29d7-4a16-9ae5-f4116b2e5529
         UseCopy: false
       - !Evergine.Components.Graphics3D.SphereMesh,Evergine.Components
         Id: 3ef37285-f016-4173-bbf0-278ec1624224
@@ -215,7 +160,7 @@ Items:
         Id: 694264a9-4b08-4e31-8182-ff1c724d8aed
         AsignedTo: Material_0
         IsEnabled: true
-        Material: d1914f09-baff-46c9-873b-263e66a3bb9a
+        Material: 630d1846-4e33-4c1b-b185-ccf66435ddbb
         UseCopy: false
       - !Evergine.Components.Graphics3D.MeshComponent,Evergine.Framework
         Id: bd21b0ea-1d30-4b66-a15f-545d995e2dca
@@ -243,7 +188,7 @@ Managers:
     IsEnabled: true
   - !Evergine.Framework.Managers.EnvironmentManager,Evergine.Framework
     Id: 1b603d3f-2c3a-46aa-b1b4-da1958dc2ffd
-    IBLReflectionProbe: 6f51bee0-e1b6-412c-bb2b-aefabee774e6
+    IBLReflectionProbe: 45e39cfb-7b4f-42a6-91c4-d082a29ef090
     IntensityMultiplier: 1.0
     IsEnabled: true
     Strategy: Automatically
