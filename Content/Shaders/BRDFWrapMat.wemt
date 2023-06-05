@@ -1,15 +1,15 @@
 !Evergine.Assets.Exporters.MaterialMetaFile,Evergine.Assets
-Id: 630d1846-4e33-4c1b-b185-ccf66435ddbb
+Id: 011a2462-fbf2-4ddb-b91b-53fbfe659386
 DefaultProfile:
   ExcludeAsset: false
   Name: null
   Platform: Undefined
 ExportAsRaw: false
 MaterialInfo:
-  Id: 67d4f23c-f6b6-4da0-a4be-651973d33ef4
+  Id: 38f35455-66b8-4de8-a4df-e5a246339e07
   ActiveDirectives: []
   AllowInstancing: false
-  EffectID: 979cb416-4e0f-4bdc-962a-6eec8e82bcb3
+  EffectID: 28496fc9-c222-4811-9377-29df3f718d0a
   Layer: 0db59561-b3f5-444f-b5de-e62e3a5b42bf
   OrderBias: 0
   Parameters:
@@ -30,7 +30,7 @@ MaterialInfo:
       ValueByteArray: MjMzPw==
     - Name: SSColor
       Type: Evergine.Mathematics.Vector3,Evergine.Mathematics
-      ValueByteArray: ZmZmP7gehT4fhWs+
+      ValueByteArray: KoXrPrgehT4fhWs+
     - Name: Metallic
       Type: System.Single
       ValueByteArray: AAAAAA==
@@ -45,13 +45,19 @@ MaterialInfo:
       ValueByteArray: AACAPw==
     - Name: TPower
       Type: System.Single
-      ValueByteArray: AACgQA==
+      ValueByteArray: AACAPw==
     - Name: TScale
       Type: System.Single
       ValueByteArray: AACAPw==
     - Name: TAmbient
       Type: System.Single
-      ValueByteArray: zcxMPg==
+      ValueByteArray: CtejPA==
+    - Name: SubsurfaceScattering
+      Type: System.Single
+      ValueByteArray: AAAAPw==
+    - Name: SubsurfaceRadius
+      Type: System.Single
+      ValueByteArray: AAAAPw==
   Samplers:
     - ID: 7d1e2792-2031-42bb-a67c-0dbd282be12a
       Name: TextureSampler

@@ -13,12 +13,16 @@
 	
 	cbuffer Parameters : register(b2)
 	{
-		float3 LightPosition	: packoffset(c0.x); [Default(0,0,1)]
-		float ambientFactor 	: packoffset(c0.w); [Default(0.02)]
-		float Metallic			: packoffset(c1.x);
-
-		float Reflectance		: packoffset(c1.z); [Default(0.3)]
-		float irradiPerp 		: packoffset(c1.w); [Default(10)]
+		float3 LightPosition		: packoffset(c0.x); [Default(0,0,1)]
+		float AmbientFactor 		: packoffset(c0.w); [Default(0.02)]
+		float3 SSColor				: packoffset(c1.x); [Default(0.9, 0.26, 0.23)]
+		float Metallic				: packoffset(c1.w);
+		float Reflectance			: packoffset(c2.x); [Default(0.3)]
+		float IrradiPerp 			: packoffset(c2.y); [Default(3)]
+		float TDistortion 			: packoffset(c2.z); [Default(1)]
+		float TPower				: packoffset(c2.w); [Default(1)]
+		float TScale				: packoffset(c3.x); [Default(1)]
+		float TAmbient				: packoffset(c3.y); [Default(0.02)]
 	};
 
 	Texture2D BaseTexture				: register(t0);
@@ -34,7 +38,6 @@
 	[Entrypoints VS=VS PS=PS]
 
 	#define PI 3.14159265359f
-	#define RECIPROCAL_PI2 0.15915494f
 	
 	struct VS_IN
 	{
@@ -56,28 +59,28 @@
 
 	struct Surface
 	{
-		float3 albedo;
-		float AO;
-		float3 position;
-		float thinkness;
-		float3 normal;
-		float reflectance;
-		float3 viewVector;
-		float metallic;
-		float3 reflectVector;
-		float roughness;
-		float NdotV;
+		half3 albedo;
+		half AO;
+		half3 position;
+		half thinkness;
+		half3 normal;
+		half reflectance;
+		half3 viewVector;
+		half metallic;
+		half3 reflectVector;
+		half roughness;
+		half NdotV;
 		
 		
-		inline void Create( in float3 color,
-							in float3 P,
-							in float3 N,	
-							in float3 viewPos,
-							in float sAO,
-							in float sthinkness,
-							in float sroughness,
-							in float smetallic,
-							in float sreflectance)
+		inline void Create( in half3 color,
+							in half3 P,
+							in half3 N,	
+							in half3 viewPos,
+							in half sAO,
+							in half sthinkness,
+							in half sroughness,
+							in half smetallic,
+							in half sreflectance)
 		{
 			albedo = color;
 			position = P;
@@ -94,21 +97,22 @@
 		}
 	};
 	
-	float3 fresnelSchlick(float cosTheta, float3 F0)
+	half3 fresnelSchlick(half cosTheta, half3 F0)
 	{
   		return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 	} 
 	
 	struct SurfaceToLight
 	{
-		float3 lightVector;
-		float NdotL;
-		float3 halfVector;
-		float NdotH;
-		float3 fresnelTerm;
-		float VdotH;
+		half3 lightVector;
+		half NdotL;
+		half3 halfVector;
+		half NdotH;
+		half3 fresnelTerm;
+		half VdotH;
+		half irradiance;
 		
-		inline void Create(in Surface surface, in float3 lightDir)
+		inline void Create(in Surface surface, in half3 lightDir)
 		{
 			lightVector = lightDir;
 			halfVector = normalize(lightDir + surface.viewVector);
@@ -119,6 +123,7 @@
 			float3 f0 = 0.16 * (surface.reflectance * surface.reflectance);
 			f0 = lerp(f0, surface.albedo, surface.metallic);
 			fresnelTerm = fresnelSchlick(VdotH, f0);
+			irradiance = max(dot(lightVector, surface.normal), 0.0) * IrradiPerp;
 		}
 	};
 
@@ -138,80 +143,91 @@
 		return output;
 	}
 
-	float3 GammaToLinear(in float3 color)
+	half3 GammaToLinear(in half3 color)
 	{
-		return pow(color, 2.2);
+		return pow(abs(color), 2.2);
 	}
 	
-	float D_GGX(float NoH, float roughness)
+	half D_GGX(half NoH, half roughness)
 	{
-		float alpha = roughness * roughness;
-		float alpha2 = alpha * alpha;
-		float NoH2 = NoH * NoH;
-		float b = (NoH2 * (alpha2 - 1.0) + 1.0);
+		half alpha = roughness * roughness;
+		half alpha2 = alpha * alpha;
+		half NoH2 = NoH * NoH;
+		half b = (NoH2 * (alpha2 - 1.0) + 1.0);
 		return alpha2 / (PI * b * b);
 	}
 	
-	float G1_GGX_Schlick(float NdotV, float roughness)
+	half G1_GGX_Schlick(half NdotV, half roughness)
 	{
 		//float r = roughness; // original
-		float r = 0.5 + 0.5 * roughness; // Disney remapping
-		float k = (r * r) / 2.0;
-		float denom = NdotV * (1.0 - k) + k;
+		half r = 0.5 + 0.5 * roughness; // Disney remapping
+		half k = (r * r) / 2.0;
+		half denom = NdotV * (1.0 - k) + k;
 		return NdotV / denom;
 	}
 	
-	float G_Smith(float NoV, float NoL, float roughness) 
+	half G_Smith(half NoV, half NoL, half roughness) 
 	{
-		float g1_l = G1_GGX_Schlick(NoL, roughness);
-		float g1_v = G1_GGX_Schlick(NoV, roughness);
+		half g1_l = G1_GGX_Schlick(NoL, roughness);
+		half g1_v = G1_GGX_Schlick(NoV, roughness);
 		return g1_l * g1_v;
 	}
 	
-	float3 BRDFSpecular(in Surface surface, in SurfaceToLight surface2light)
+	half3 BRDFSpecular(in Surface surface, in SurfaceToLight surface2light)
 	{
-		float3 F = surface2light.fresnelTerm;
-		float D = D_GGX(surface2light.NdotH, surface.roughness);
-		float G = G_Smith(surface.NdotV, surface2light.NdotL, surface.roughness);
+		half3 F = surface2light.fresnelTerm;
+		half D = D_GGX(surface2light.NdotH, surface.roughness);
+		half G = G_Smith(surface.NdotV, surface2light.NdotL, surface.roughness);
 		
-		return (D * G * F) / max(4.0 * surface.NdotV * surface2light.NdotL, 0.001);
+		half3 specular = (D * G * F) / max(4.0 * surface.NdotV * surface2light.NdotL, 0.001);
+		
+		return specular * surface2light.irradiance;
 	}
 	
-	float3 BRDFDiffuse(in Surface surface, in SurfaceToLight surface2light)
+	half3 BRDFDiffuse(in Surface surface, in SurfaceToLight surface2light)
 	{
-		float3 diffuseIrradiance = IBLIrradianceTexture.Sample(TextureSampler, surface.normal).rgb;
+		half3 diffuseIrradiance = IBLIrradianceTexture.Sample(TextureSampler, surface.normal).rgb;
 	
-		float3 rhoD = 1.0 - surface2light.fresnelTerm; // if not specular, use as diffuse
+		half3 rhoD = 1.0 - surface2light.fresnelTerm; // if not specular, use as diffuse
 		rhoD *= 1.0 - surface.metallic; // no diffuse for metals
 		
+		half3 ambient = surface.albedo * surface.AO * AmbientFactor * diffuseIrradiance;
+		half3 diffuse = rhoD * surface.albedo / PI;
 		
-		float3 ambient = surface.albedo * surface.AO * ambientFactor * diffuseIrradiance;
-		float3 diffuse = rhoD * surface.albedo / PI;
-		float irradiance = max(dot(surface2light.lightVector, surface.normal), 0.0) * irradiPerp;
-		
-		return ambient + diffuse * irradiance;
+		return ambient + diffuse * surface2light.irradiance;
+	}
+	
+	half3 ComputeTranslucency(in Surface surface, in SurfaceToLight surface2light)
+	{
+		half3 vLTLight = surface2light.lightVector + surface.normal * TDistortion;
+		half fLTDot = pow(saturate(dot(surface.viewVector, -vLTLight)), TPower) * TScale;
+		half3 fLT = (fLTDot + TAmbient) * surface.thinkness;
+		return surface.albedo * fLT * SSColor;
 	}
 
 	float4 PS(PS_IN input) : SV_Target
 	{
-		float3 base = GammaToLinear(BaseTexture.Sample(TextureSampler, input.texCoord).rgb);		
-		float3 RAT = RoughnessAOThickness.Sample(TextureSampler, input.texCoord).xyz;
+		half3 base = GammaToLinear(BaseTexture.Sample(TextureSampler, input.texCoord).rgb);		
+		half3 RAT = RoughnessAOThickness.Sample(TextureSampler, input.texCoord).xyz;
 				
-		float3 normalTex = NormalTexture.Sample(TextureSampler, input.texCoord).rgb * 2 - 1;
+		half3 normalTex = NormalTexture.Sample(TextureSampler, input.texCoord).rgb * 2 - 1;
 		float3x3 tangentToWorld = float3x3(normalize(input.tangent), normalize(input.bitangent), normalize(input.normal));
-		float3 normal = normalize(mul(normalTex, tangentToWorld));
+		half3 normal = normalize(mul(normalTex, tangentToWorld));
 		
 		Surface surface;
 		surface.Create(base,input.positionWS, normal, CameraPosition, RAT.y, RAT.z, RAT.x, Metallic, Reflectance);
 		
-		float3 lightDir = normalize(LightPosition - input.positionWS);
+		half3 lightDir = normalize(LightPosition - input.positionWS);
 		SurfaceToLight surface2light;
 		surface2light.Create(surface, lightDir);
 		
-		float3 diffuse = BRDFDiffuse(surface, surface2light);
-		float3 specular = BRDFSpecular(surface, surface2light);
+		half3 diffuse = BRDFDiffuse(surface, surface2light);
+		half3 specular = BRDFSpecular(surface, surface2light);
+		half3 translucency = ComputeTranslucency(surface, surface2light);
 		
-		return float4(diffuse + specular, 1.0);
+		half3 radiance = diffuse + specular + translucency;
+		
+		return float4(radiance, 1.0);
 	}
 
 [End_Pass]
