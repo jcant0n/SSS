@@ -2,6 +2,8 @@
 
 This repository showcases a Fast Subsurface Scattering shader implementation in HLSL, specifically designed for mobile devices. The shader employs advanced BRDF and Translucency techniques to achieve realistic lighting and material interaction in real-time skin rendering.
 
+(Model courtesy, Ten24 Digital Capture)
+
 ## Features
 
 - Real-time Subsurface Scattering optimized for mobile devices
