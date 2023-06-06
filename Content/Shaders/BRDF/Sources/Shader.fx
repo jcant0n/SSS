@@ -67,7 +67,6 @@
 		half reflectance;
 		half3 viewVector;
 		half metallic;
-		half3 reflectVector;
 		half roughness;
 		half NdotV;
 		
@@ -87,7 +86,6 @@
 			thinkness = sthinkness;
 			normal = N;
 			viewVector = normalize(viewPos - P);
-			reflectVector = normalize(reflect(viewPos, N));
 			NdotV = saturate(dot(N, viewPos));
 			AO = sAO;
 			thinkness = sthinkness;
