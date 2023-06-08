@@ -83,7 +83,6 @@
 		{
 			albedo = color;
 			position = P;
-			thinkness = sthinkness;
 			normal = N;
 			viewVector = normalize(viewPos - P);
 			NdotV = saturate(dot(N, viewPos));
